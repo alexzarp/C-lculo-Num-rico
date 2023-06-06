@@ -1,51 +1,30 @@
 import numpy as np
 
-def gauss_seidel(plate, epsilon=1e-5, max_iterations=100):
-    rows = len(plate)
-    cols = len(plate[0])
+def put_one_in_None(plate):
+    for i in range(len(plate)):
+        for j in range(len(plate[0])):
+            if plate[i][j] == None:
+                plate[i][j] = float(1)
+    return plate
 
-    # Convert the matrix to float type and replace None values with np.nan
-    A = np.array(plate, dtype=float)
-    A[np.isnan(A)] = np.nan
+def gauss_seidel(plate, epsilon=1e-6, maxiter=100):
+    equal = plate[-1].copy()
+    new_equal = equal.copy()
+    old_equal = []
+    plate.pop(-1)
+    diag = np.diag(plate)
+    res = epsilon + 1  # Inicializar res com um valor maior que epsilon
+    itera = 0
 
-    # Initialize the solution vector with zeros
-    x = np.zeros(cols)
+    while (epsilon < res or itera < maxiter):
+        for i in range(len(equal)):
+            new_equal.append(((equal[i] + sum(plate[i])) / diag[i]))
 
-    # Initialize the previous iteration matrix
-    x_prev = np.copy(x)
+        res = np.max(np.abs(np.array(new_equal) - np.array(old_equal)))
+        itera += 1
+        old_equal = new_equal
+        new_equal = []  # Redefinir new_equal a cada iteração
 
-    # Initialize the iteration counter
-    iteration = 0
-
-    # Execute the Gauss-Seidel method
-    while iteration < max_iterations:
-        for i in range(rows):
-            # Initialize the sum
-            total = 0
-
-            for j in range(cols):
-                # Ignore np.nan values
-                if np.isnan(A[i][j]):
-                    continue
-
-                # Ignore the coefficient of the current unknown
-                if j == i:
-                    continue
-
-                total += A[i][j] * x[j]
-
-            # Calculate the updated unknown
-            x[i] = (A[i][cols-1] - total) / A[i][i]
-
-        # Check the stopping criterion
-        error = np.linalg.norm(x - x_prev)
-        if error < epsilon:
-            break
-
-        # Update the previous iteration matrix
-        x_prev = np.copy(x)
-
-        # Increment the iteration counter
-        iteration += 1
-
-    return x
+    print("Iterações:", itera)
+    print("Aproximação:", res)
+    return new_equal

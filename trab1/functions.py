@@ -65,3 +65,4 @@ def calculate_tx_points(plate):
                     plate[i][j] = None
 
     return plate
+    
