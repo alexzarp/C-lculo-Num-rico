@@ -1,4 +1,6 @@
 from functions import *
+from gaussSeidel import *
+from graph import *  
 
 plate = [
     [None, 25, 30, None, None],
@@ -12,3 +14,5 @@ calculate_tx_points(plate)
 
 print_matrix_beautiful(plate,"Tx Points:")
 print_matrix_beautiful(gauss_seidel(plate), "\nGauss-Seidel:") 
+
+# plot_3d_graph(plate)
