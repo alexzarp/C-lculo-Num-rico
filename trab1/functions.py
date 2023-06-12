@@ -66,3 +66,41 @@ def calculate_tx_points(plate):
 
     return plate
     
+def transform_plate_to_mat(plate):
+    rows = len(plate)
+    cols = len(plate[0])
+
+    int_to_float(plate)
+
+    mat = [[0 for x in range(rows * cols + 1)] for y in range(rows * cols)]
+    mat = [[4 if i == j else mat[i][j] for j in range(rows * cols + 1)] for i in range(rows * cols)]
+    equal = []
+
+    for i in range(rows):
+        for j in range(cols):
+            if isinstance(plate[i][j], str) and plate[i][j].startswith('t'):
+                sum_neighbors = 0
+
+                if i > 0 and isinstance(plate[i - 1][j], float):
+                    sum_neighbors += plate[i - 1][j]
+                    mat[i][j] = -1
+
+                if i < rows - 1 and isinstance(plate[i + 1][j], float):
+                    sum_neighbors += plate[i + 1][j]
+                    mat[i][j] = -1
+
+                if j > 0 and isinstance(plate[i][j - 1], float):
+                    sum_neighbors += plate[i][j - 1]
+                    mat[i][j] = -1
+
+                if j < cols - 1 and isinstance(plate[i][j + 1], float):
+                    sum_neighbors += plate[i][j + 1]
+                    mat[i][j] = -1
+
+                equal.append(sum_neighbors)
+
+    mat.append(equal)
+
+    return mat
+
+
