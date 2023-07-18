@@ -67,7 +67,7 @@ mat = [
 calculate_tx_points(plate2)
 
 print_matrix_beautiful(plate2,"Tx Points:")
-# print_matrix(gauss_seidel(mat2), "\nGauss-Seidel:") 
-print_matrix(jacobi_method(mat2), "\nJacobi:")
+print_matrix(gauss_seidel(mat2), "\nGauss-Seidel:") 
+# print_matrix(jacobi_method(mat2), "\nJacobi:")
 
 plot_3d_graph(plate2)
